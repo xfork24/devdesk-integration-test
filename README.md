@@ -54,3 +54,59 @@ The frozen recipe uses image
 and a 60-second timeout. The independent tests remain unchanged. Green,
 verify, Git sealing, and independent review are subsequent coordinator steps;
 no passing result is claimed here.
+
+## Workflow cdf39268 greeting
+
+Import the dependency-free ESM module:
+
+```js
+import { greeting } from './src/workflow-cdf39268-greeting.mjs';
+
+greeting('  Alice  '); // 'Hello, Alice!'
+greeting('  Ada  Lovelace  '); // 'Hello, Ada  Lovelace!'
+```
+
+The synchronous named export accepts primitive strings, removes boundary
+whitespace using `trim()`, and preserves internal characters and whitespace
+(AC-GREET). Empty or whitespace-only strings and all non-string values,
+including omitted arguments and boxed strings, synchronously throw `TypeError`
+without invoking conversion hooks (AC-INVALID). Error messages are not part of
+the contract. After catching an error, pass a valid name to call again; no reset
+is needed. The module has no dependencies or shared mutable state.
+
+From the repository root, use Node.js supporting ESM and `node:test`:
+
+```sh
+# Task suite
+node --test tests/workflow-cdf39268/behavior.test.mjs
+# Feature suite (once supplied by the independent test author)
+node --test tests/workflow-cdf39268-feature/behavior.test.mjs
+```
+
+Both frozen recipes specify a 60-second timeout and image
+`sha256:09fbe4ee95753eef3cb79788e14713ab64e7711ff9dd8f6f3dfa748cb6176125`.
+The Feature suite is not present at implementation time; the tests directory
+remains unchanged and read-only for the implementation author.
+
+Implementation evidence uses requirement
+`5def743f-663c-4e58-b97b-588621266552` v1, design
+`667db527-cea4-4e9a-a3dd-18a3326b0677` v1, and Task test definition
+`b3ad2dc6-c233-4fe9-ba72-a5a646491a7c` v1, under Task TDD delivery spec
+`builtin-spec-stage-implementation-v1` v1. The supplied baseline is
+`ad2c18d8ed8325f66998cae1db0cc8d9765468b4`; Git verification and candidate
+sealing belong to the coordinator and were not performed by the implementer.
+
+Before adding the module, in `/work` with Node.js v24.13.0,
+`timeout 60s node --test tests/workflow-cdf39268/behavior.test.mjs` exited 1:
+one test failed with `ERR_ASSERTION`, caused by the caught
+`ERR_MODULE_NOT_FOUND` for this target. Behavior cases had not run. The test
+file SHA-256 was
+`d42095018fbe2e474de86a8ff59e5b638249642ed0199d7718d8b5da95f10154`.
+This local reproduction does not independently verify the frozen image.
+The coordinator also supplied isolated Red operation
+`3cc4bfdf-51e5-4f24-93fd-3d07dd0db155` for the baseline and frozen image.
+Green, regression verification, candidate SHA binding, and independent review
+remain coordinator steps; no passing behavior result is claimed here.
+
+No migration is required. To withdraw this change, the coordinator can remove
+the new module and this README section, preserving existing modules and tests.
