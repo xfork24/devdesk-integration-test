@@ -1,6 +1,37 @@
 # devdesk-integration-test
 Dedicated disposable integration acceptance repository for DevDesk
 
+## Workflow v4-4c3a9f27 greeting
+
+```js
+import { greeting } from './src/workflow-v4-4c3a9f27/greeting.mjs';
+
+greeting('  Ada  '); // 'Hello, Ada!'
+greeting(' Ada  Lovelace '); // 'Hello, Ada  Lovelace!'
+```
+
+The synchronous named export accepts primitive strings, uses standard `trim()`
+to remove surrounding whitespace, and preserves internal text and case
+(AC-GREET). Empty or whitespace-only strings and all non-string values,
+including omitted arguments and boxed strings, synchronously throw `TypeError`
+without inspecting or coercing the input (AC-INVALID). For example,
+`greeting(null)` throws; catch the error and call again with a valid name.
+Error message text is not part of the contract. The module has no dependencies,
+I/O, or shared mutable state.
+
+Run the independent Task suite from the repository root with Node.js supporting
+ESM and `node:test`:
+
+```sh
+node --test tests/workflow-v4-4c3a9f27-task/behavior.test.mjs
+```
+
+Feature and final candidate verification also require the independently supplied
+`tests/workflow-v4-4c3a9f27-feature/behavior.test.mjs` in the same `node --test`
+command. The fixed recipe specifies a 60-second timeout and image
+`sha256:5f8731ec42de5c5d542d5398147c3348c200ad7a66c6cfc99a5f52e0b9776ffc`.
+Local execution alone does not verify that image or seal a candidate revision.
+
 ## Workflow v4-a8003835 greeting
 
 ```js
