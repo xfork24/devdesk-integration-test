@@ -1,6 +1,37 @@
 # devdesk-integration-test
 Dedicated disposable integration acceptance repository for DevDesk
 
+## Workflow v5-99f2a5ce greeting
+
+```js
+import { greeting } from './src/workflow-v5-99f2a5ce/greeting.mjs';
+
+greeting('  Ada  '); // 'Hello, Ada!'
+greeting(' Ada  Lovelace '); // 'Hello, Ada  Lovelace!'
+```
+
+The synchronous named export accepts primitive strings, applies JavaScript
+`trim()` to surrounding whitespace, and preserves internal characters,
+whitespace, case, and Unicode content (AC-GREET). Empty or whitespace-only
+strings and all non-string inputs, including omitted arguments and boxed
+strings, synchronously throw `TypeError` without coercion (AC-INVALID).
+For example, catch the error from `greeting(null)`, then call again with a
+valid string; no reset is needed. Error messages are not contractual.
+The module has no dependencies, I/O, or shared mutable state.
+
+From the repository root:
+
+```sh
+node --test tests/workflow-v5-99f2a5ce-task/behavior.test.mjs
+# Once the independent Feature suite is supplied:
+node --test tests/workflow-v5-99f2a5ce-task/behavior.test.mjs tests/workflow-v5-99f2a5ce-feature/behavior.test.mjs
+```
+
+The frozen recipe uses a 60-second timeout and image
+`sha256:5f8731ec42de5c5d542d5398147c3348c200ad7a66c6cfc99a5f52e0b9776ffc`.
+Local validation does not certify execution in that image. Independent Feature
+verification, final candidate verification, and review are separate steps.
+
 ## Workflow v4-8852bd89 greeting
 
 ```js
